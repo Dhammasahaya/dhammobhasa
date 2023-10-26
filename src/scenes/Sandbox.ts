@@ -1,4 +1,4 @@
-import { Citta, CittaEnt } from "../entities/Citta";
+import { Citta } from "../entities/Citta";
 import { Button } from "../components/Button";
 import { GridDebugger } from "../components/GridDebuggerLayer";
 import { CittaComponent } from "../components/CittaComponent";
@@ -17,16 +17,6 @@ class SandboxScene extends Phaser.Scene {
       minorSize
     );
     this.add.existing(debuggerLayer);
-
-    const citta = new CittaEnt({ numOfHetu: 2, vedana: "somanassa" });
-    const cittaObject = CittaComponent.fromEntity(citta, {
-      scene: this,
-      x: 200,
-      y: 200,
-      radius: 50,
-      config: {},
-    });
-    this.add.existing(cittaObject);
 
     const cittaList: Citta[] = [
       { numOfHetu: 2, vedana: "somanassa" },
@@ -54,7 +44,17 @@ class SandboxScene extends Phaser.Scene {
       }
     }
 
-    const button = new Button(this, 200, 280, "Increment hetu");
+    const citta: Citta = { numOfHetu: 2, vedana: "somanassa" };
+    const cittaObject = CittaComponent.fromEntity(citta, {
+      scene: this,
+      x: 200,
+      y: 100,
+      radius: 50,
+      config: {},
+    });
+    this.add.existing(cittaObject);
+
+    const button = new Button(this, 200, 180, "Increment hetu");
     this.add.existing(button);
 
     button.on("pointerdown", () => {
