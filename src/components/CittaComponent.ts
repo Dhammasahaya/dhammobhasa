@@ -4,7 +4,7 @@ import { CircleGraphicsConfig } from "./CircleGraphics";
 import { NamaComponent, NamaComponentFromEntityOption } from "./NamaComponent";
 
 export class CittaComponent extends NamaComponent {
-  _numOfHetu: number = 0;
+  readonly hetu: number = 0;
   _hetuRenderFactor: number = 0.2;
   sahetuka: boolean = false;
   vedana: VedanaType = "upekkha";
@@ -19,12 +19,14 @@ export class CittaComponent extends NamaComponent {
     super(scene, x, y, radius, {
       ...config,
       strokeAlpha: config.strokeAlpha ?? 1,
+      fillAlpha: config.fillAlpha ?? 0.2,
+      fill: config.fill ?? 0x777777,
     });
     super.updateState();
   }
 
   setHetu(num: number): void {
-    this._numOfHetu = num;
+    this.hetu = num;
     this.sahetuka = num > 0;
     this.updateRenderState();
   }
@@ -34,10 +36,10 @@ export class CittaComponent extends NamaComponent {
 
     switch (this.vedana) {
       case "somanassa":
-        this._stroke = 16776960;
+        this._stroke = 0xffff00;
         break;
       case "domanassa":
-        this._stroke = 16711680;
+        this._stroke = 0xff0000;
         break;
       case "upekkha":
         this._stroke = 0xaaaaaa;
@@ -57,11 +59,11 @@ export class CittaComponent extends NamaComponent {
     super.updateState();
 
     // update hetu render
-    if (this._numOfHetu) {
+    if (this.hetu) {
       this.fillStyle(0xffffff);
-      if (this._numOfHetu === 1) {
+      if (this.hetu === 1) {
         this.fillCircle(0, 0, this._radius * this._hetuRenderFactor);
-      } else if (this._numOfHetu === 2) {
+      } else if (this.hetu === 2) {
         this.fillCircle(
           0,
           -this._radius / 3,
@@ -72,7 +74,7 @@ export class CittaComponent extends NamaComponent {
           this._radius / 3,
           this._radius * this._hetuRenderFactor
         );
-      } else if (this._numOfHetu === 3) {
+      } else if (this.hetu === 3) {
         this.fillCircle(
           0,
           -this._radius / 3,

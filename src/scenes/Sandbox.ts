@@ -1,4 +1,4 @@
-import { Citta } from "../entities/Citta";
+import { Citta, CittaEnt } from "../entities/Citta";
 import { Button } from "../components/Button";
 import { GridDebugger } from "../components/GridDebuggerLayer";
 import { CittaComponent } from "../components/CittaComponent";
@@ -18,10 +18,7 @@ class SandboxScene extends Phaser.Scene {
     );
     this.add.existing(debuggerLayer);
 
-    const button = new Button(this, 100, 100);
-    this.add.existing(button);
-
-    const citta = new Citta({ numOfHetu: 2, vedana: "somanassa" });
+    const citta = new CittaEnt({ numOfHetu: 2, vedana: "somanassa" });
     const cittaObject = CittaComponent.fromEntity(citta, {
       scene: this,
       x: 200,
@@ -31,29 +28,39 @@ class SandboxScene extends Phaser.Scene {
     });
     this.add.existing(cittaObject);
 
-    const cittaList = [
-      new Citta({ numOfHetu: 2, vedana: "somanassa" }),
-      new Citta({ numOfHetu: 2, vedana: "upekkha" }),
-      new Citta({ numOfHetu: 2, vedana: "domanassa" }),
-      new Citta({ numOfHetu: 1, vedana: "upekkha" }),
-      new Citta({ numOfHetu: 0, vedana: "dukkha" }),
-      new Citta({ numOfHetu: 0, vedana: "sukha" }),
-      new Citta({ numOfHetu: 3, vedana: "somanassa" }),
-      new Citta({ numOfHetu: 3, vedana: "upekkha" }),
-      new Citta({ numOfHetu: 2, vedana: "somanassa" }),
-      new Citta({ numOfHetu: 2, vedana: "upekkha" }),
+    const cittaList: Citta[] = [
+      { numOfHetu: 2, vedana: "somanassa" },
+      { numOfHetu: 2, vedana: "upekkha" },
+      { numOfHetu: 2, vedana: "domanassa" },
+      { numOfHetu: 1, vedana: "upekkha" },
+      { numOfHetu: 0, vedana: "dukkha" },
+      { numOfHetu: 0, vedana: "sukha" },
+      { numOfHetu: 3, vedana: "somanassa" },
+      { numOfHetu: 3, vedana: "upekkha" },
+      { numOfHetu: 2, vedana: "somanassa" },
+      { numOfHetu: 2, vedana: "upekkha" },
     ];
 
-    for (const i in cittaList) {
-      const citta = cittaList[i];
-      const component = CittaComponent.fromEntity(citta, {
-        scene: this,
-        radius: 20,
-        x: 40,
-        y: 40 + 60 * Number(i),
-      });
-      this.add.existing(component);
+    for (let j = 0; j < 2; j++) {
+      for (const i in cittaList) {
+        const citta = cittaList[i];
+        const component = CittaComponent.fromEntity(citta, {
+          scene: this,
+          radius: 20 - 10 * j,
+          x: 40 * (j + 1),
+          y: 40 + 60 * Number(i),
+        });
+        this.add.existing(component);
+      }
     }
+
+    const button = new Button(this, 200, 280, "Increment hetu");
+    this.add.existing(button);
+
+    button.on("pointerdown", () => {
+      const newCittaHetu = (cittaObject.hetu + 1) % 4;
+      cittaObject.setHetu(newCittaHetu);
+    });
   }
 }
 
